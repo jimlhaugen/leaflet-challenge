@@ -73,3 +73,24 @@ function getColor(depth) {
   }
 };
 
+
+const legend = L.control({ position: 'bottomright' });
+  
+// console.log(Square1)
+  legend.onAdd = function () {
+  
+    let div = L.DomUtil.create('div', 'legend');
+    let depths = ['-10 - 10', '10 - 30', '30 - 50', '50 - 70', '70 - 90', '90+'];
+    let colors = ['#a3f600', '#dcf400', '#f7db11', '#fdb72a', '#fca35d', '#ff5f65'];
+
+    for(let i = 0; i < depths.length; i++) {
+      div.innerHTML += "<i style='background: " + colors[i] + "'></i>" + depths[i] + "<br>";
+    }
+
+    return div;
+  };
+
+  legend.addTo(myMap);
+// };
+
+// createLegend(myMap);
