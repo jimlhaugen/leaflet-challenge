@@ -1,32 +1,32 @@
 
-//  Create a map object
+//  Creating a map object
 let myMap = L.map("map", {
   center: [
     40.09, -105.71
   ],
   zoom: 4.5,})
 
-// Add a tile layer
+// Adding a tile layer to myMap
+// Map slightly different than shown in the instructions
 let topo = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(myMap);
 
 
 // Store our API endpoint as queryUrl
+// Earthquake data selected to correspond to weekly earhtquakes measuring at least 2.5 
 let queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojson";
 
 
 // Perform a GET request to the query URL
 d3.json(queryUrl).then(function (data) {
-  console.log(data.features);
 
   createFeatures(data.features);
 
 });
 
-// Loop through the each object (each key-pair found within curly brackets)
-// of the features array (found within the scquare brackets)  
-
+// Loop through the each object (i.e., each key-pair found within curly brackets is defiened as an object )
+// of the features array (i.e., data found within the scquare brackets is defined as an array)  
 function createFeatures(quakeData){   // quakeData is data.features read from the data
   let quakeMarkers = [];  // initial markers 
   for (i=0;i<quakeData.length;i++){   // iterate each object of the features array
@@ -40,11 +40,12 @@ function createFeatures(quakeData){   // quakeData is data.features read from th
         weight: 1,
         color: 'black',
         fillColor: getColor(depth),
-        radius: magnitude * 15000   // radius of marker is proportional magnitude;
-                                    // multiplier 15,000 provides a nice visual presentation
+        radius: magnitude * 15000   // radius of marker is proportional to magnitude;
+                                    // multiplier 15,000 provides a nice, non-overwhelming visual presentation
       })
-        // Marker info Info about the earthquake includes the place (properties.place), 
+        // Marker info about the earthquake has been selected to include the place (properties.place), 
         // magnitude (properties.mag), depth, and time (properties.time)
+
       .bindPopup    // info window appears pops up upon click of marker
       (`<h3>${quakeData[i].properties.place}</h3>
       <p>
@@ -52,11 +53,11 @@ function createFeatures(quakeData){   // quakeData is data.features read from th
       Depth: ${depth}<br>
       Time: ${Date(quakeData[i].properties.time)}<br>
       </p>`)
-      .addTo(myMap);
+      .addTo(myMap);  // adding markers
   };
 };
 
-  // Colors determined using https://www.imgcolorpicker.com/ from image in the instructions
+// Colors representative of depth determined using https://www.imgcolorpicker.com/ from image in the instructions
 function getColor(depth) {
   if (depth > 90) {
     return 'rgb(255,95,101)'  // 
@@ -73,24 +74,21 @@ function getColor(depth) {
   }
 };
 
-
-const legend = L.control({ position: 'bottomright' });
-  
-// console.log(Square1)
+// Constucting color-code legend with Leaflet codes 
+const legend = L.control({ position: 'bottomright' });  // placement of legend on bottom left of map
   legend.onAdd = function () {
-  
-    let div = L.DomUtil.create('div', 'legend');
+    let div = L.DomUtil.create('div', 'legend');  
     let depths = ['-10 - 10', '10 - 30', '30 - 50', '50 - 70', '70 - 90', '90+'];
+// Using alternate, codes for colors to spice it up
     let colors = ['#a3f600', '#dcf400', '#f7db11', '#fdb72a', '#fca35d', '#ff5f65'];
-
+        
     for(let i = 0; i < depths.length; i++) {
+      // Creating six row in the legend
+      // "i style" corresponds to ".legend i" contained in "style.css" in Leaflet
       div.innerHTML += "<i style='background: " + colors[i] + "'></i>" + depths[i] + "<br>";
     }
 
     return div;
   };
 
-  legend.addTo(myMap);
-// };
-
-// createLegend(myMap);
+legend.addTo(myMap);  // adding legend
