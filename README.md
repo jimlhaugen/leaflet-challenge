@@ -13,11 +13,11 @@
 ### Purpose 
 The purpose of this analysis is to develop a machine learning model capable of predicting loan approval of applicant(s) seeking a mortgage.  By leveraging machine learning and the models employed in machine learning, the goal is to create a binary classifier that can determine whether applicants will be successful in receiving a loan. This model aims to help loan providers to make data-driven decisions in selecting applicants, thereby providing one source for predicting the approval of mortgage applicants.
 
-
-
 ### Overview of the Analysis
 
-#### Data Preprossing
+
+
+#### Data Preprocessing
 The original data was provided in a .csv.  It was read into a Pandas DataFrame and found to comprise 614 rows of data representative of previous mortgage applicants comprised of the following features:
 - **Loan_ID:** Unique identifier for each row. 
 - **gender:** Gender of the applicant.
